@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hangman shit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body{
+      background-color: #c1d72e;
+      font-family: Roboto;
+    }
+
+    .container{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .title,
+    .title2,
+    .generic-text{
+      color: white;
+      font-family: Roboto;
+      margin: 0;
+      font-weight: 400;
+    }
+
+    .title{
+      margin-bottom: 10px;
+      font-size: 2.6em;
+    }
+
+    .title2{
+      margin-bottom: 25px;
+      font-size: 1.6em;
+    }
+
+    .generic-text{
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+    }
+
+    .letter-row{
+      display: flex;
+      justify-content: center;
+    }
+
+    .letter{
+      color:#c1d72e;
+      background-color: white;
+      border: 1px solid white;
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.15s ease-in-out,
+                  color 0.15s ease-in-out;
+    }
+    .letter:hover{
+      color: white;
+      background-color: #c1d72e;
+    }
+
+    .drawing{
+      width: 450px;
+      height: 250px;
+      border: 1px dashed white;
+      margin-bottom: 20px;
+    }
+
+    .buttons{
+      font-family: Roboto;
+      background-color: #c1d72e;
+      color:white;
+      border: 1px solid white;
+      cursor: pointer;
+      font-size: 1.5rem;
+      width: 200px;
+      height: 70px;
+      border-radius: 5%;
+      margin-right: 15px;
+      transition: background-color 0.15s ease-in-out,
+                  color 0.15s ease-in-out;
+    }
+    .buttons:hover{
+      background-color: white;
+      color:#c1d72e;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">HANGMAN</h1>
+    <h2 class="title2">VANILLA JAVASCRIPT HANGMAN GAME</h2>
+    <p class="generic-text">Use the alphabet below to guess the word, or click hint to get a clue.</p>
+  </div>
+  <div class="letter-row">
+    <button class="letter">Q</button>
+    <button class="letter">W</button>
+    <button class="letter">E</button>
+    <button class="letter">R</button>
+    <button class="letter">T</button>
+    <button class="letter">Y</button>
+    <button class="letter">U</button>
+    <button class="letter">I</button>
+    <button class="letter">O</button>
+    <button class="letter">P</button>
+  </div>
+  <div class="letter-row">
+    <button class="letter">A</button>
+    <button class="letter">S</button>
+    <button class="letter">D</button>
+    <button class="letter">F</button>
+    <button class="letter">G</button>
+    <button class="letter">H</button>
+    <button class="letter">J</button>
+    <button class="letter">K</button>
+    <button class="letter">L</button>
+  </div>
+  <div class="letter-row" style="margin-bottom: 20px;">
+    <button class="letter">Z</button>
+    <button class="letter">X</button>
+    <button class="letter">C</button>
+    <button class="letter">V</button>
+    <button class="letter">B</button>
+    <button class="letter">N</button>
+    <button class="letter">M</button>
+  </div>
+  <div class="container">
+    <p class="generic-text">Category</p>
+    <p class="generic-text">Guess</p>
+    <p class="generic-text">Lives</p>
+    <p class="generic-text">Clue</p>
+  </div>
+  <div class="container">
+    <div class="drawing"></div>
+    <div style="display: flex;">
+      <button class="buttons">Hint</button>
+      <button class="buttons">Play again</button>
+      <button class="buttons">Add custom</button>
+    </div>
+  </div>
+
+  <script defer>
+
+  </script>
+</body>
+</html>
