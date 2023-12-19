@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <title>Clock shit</title>
+  <style>
+    body{
+      background-color: black;
+    }
+    
+    p{
+      color: #17D4FE;
+      font-family: Orbitron;
+      font-size: 60px;
+    }
+
+    .container{
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <p>
+      <span id="hours">00</span> : <span id="minutes">00</span> : <span id="seconds">00</span> <span id="ampm">AM</span>
+    </p>
+  </div>
+
+  <script defer>
+    function getTime(){
+      let date = new Date();
+      const hours = document.getElementById('hours')
+      const minutes = document.getElementById('minutes')
+      const seconds = document.getElementById('seconds')
+      const ampm = document.getElementById('ampm')
+      let s = date.getSeconds()
+      let m = date.getMinutes()
+      let h = date.getHours()
+
+      if(h == 0){
+        h = 12
+      }
+      
+      if(h > 12){
+          h = h - 12;
+      }
+
+      ampm.innerHTML = date.getHours() >= 12 ? 'PM' : 'AM'
+      hours.innerHTML = h <= 9 ? '0' + h : h
+      minutes.innerHTML = m <= 9 ? '0' + m : m
+      seconds.innerHTML = s <= 9 ? '0' + s : s
+
+      setTimeout(getTime, 1000)
+    }
+
+    getTime()
+  </script>
+</body>
+</html>

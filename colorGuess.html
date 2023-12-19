@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <title>Guessing shit</title>
+  <style>
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .header{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 10px;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    .header-color{
+      background-color: #2C8E99;
+    }
+    
+    p{
+      margin: 0;
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    .text{
+      font-size: 1.3rem;
+    }
+
+    .guess{
+      font-size: 2.3rem;
+    }
+
+    .selectors{
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .selector-btns{
+      color: rgb(9, 149, 204);
+      background-color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 5px;
+      transition: background-color 0.1s ease-in-out,
+                  color 0.1s ease-in-out;
+    }
+    .selector-btns:hover{
+      color: white;
+      background-color: #2C8E99;
+    }
+
+    .selected{
+      color: white;
+      background-color: #2C8E99;
+    }
+
+    main{
+      background-color: rgb(24, 24, 24);
+    }
+
+    .row{
+      display: flex;
+      justify-content: center;
+    }
+
+    .color{
+      border: none;
+      margin: 10px;
+      height: 120px;
+      width: 120px;
+      border-radius: 15%;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    .result{
+      cursor: default;
+      width: 90px;
+      display: flex;
+      pointer-events: none;
+    }
+
+    .second-row{
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header id="header" class="header header-color">
+    <p class="text">THE GREAT</p>
+    <p class="guess">RGB(<span id="colorR">38</span>, <span id="colorG">168</span>, <span id="colorB">105</span>)</p>
+    <p class="text">GUESSING GAME</p>
+  </header>
+  <div class="selectors">
+    <button onclick="generateColor()" class="selector-btns">NEW COLORS</button>
+    <div id="result" class="selector-btns result"></div>
+    <div style="display: flex;">
+      <button id="easy" onclick="changeDifficulty()" class="selector-btns">EASY</button>
+      <button id="hard" onclick="changeDifficulty()" class="selector-btns selected">HARD</button>
+    </div>
+  </div>
+  <main>
+    <div class="row">
+      <button id="btn1" onclick="guess('btn1')" class="color"></button>
+      <button id="btn2" onclick="guess('btn2')" class="color"></button>
+      <button id="btn3" onclick="guess('btn3')" class="color"></button>
+    </div>
+    <div id="second-row" class="row">
+      <button id="btn4" onclick="guess('btn4')" class="color"></button>
+      <button id="btn5" onclick="guess('btn5')" class="color"></button>
+      <button id="btn6" onclick="guess('btn6')" class="color"></button>
+    </div>
+  </main>
+  <script defer>
+    const btn1 = document.getElementById('btn1')
+    const btn2 = document.getElementById('btn2')
+    const btn3 = document.getElementById('btn3')
+    const btn4 = document.getElementById('btn4')
+    const btn5 = document.getElementById('btn5')
+    const btn6 = document.getElementById('btn6')
+    const result = document.getElementById('result')
+    const header = document.getElementById('header')
+
+    function getRandomInt(max) { 
+      return Math.floor(Math.random() * max);
+    }
+
+    function guess(target){
+      const guessButton = document.getElementById(target)
+      if(guessButton.classList.contains('color0')){
+        result.innerHTML = 'CORRECT!'
+        replaceColors(target)
+      }else{
+        result.innerHTML = 'TRY AGAIN!'
+      }
+
+    }
+
+    function replaceColors(result){
+      for(let i = 1; i < 7; i++){
+        if(`btn${i}` !== result){
+          //for all buttons except the correct one, delete the color class, and add the 'correct color' class(color0)
+          const currentBtn = document.getElementById(`btn${i}`)
+          currentBtn.classList.remove(currentBtn.classList[1])
+          currentBtn.classList.add('color0')
+          header.classList.remove(header.classList[1])
+          header.classList.add('color0')
+        }
+      }
+    }
+      
+
+    function generateColor(){
+      result.innerHTML = ''
+
+      header.classList.remove(header.classList[1])
+      header.classList.add('header-color')
+
+      //you have to reset the header color, and the message in the middle after each game
+
+      const colorRElem = document.getElementById('colorR')
+      const colorGElem = document.getElementById('colorG')
+      const colorBElem = document.getElementById('colorB')
+
+      const easy = document.getElementById('easy')
+      const hard = document.getElementById('hard')
+      let arrOfBtns = []
+      if(easy.classList.contains('selected')){
+        arrOfBtns = [btn1, btn2, btn3]
+      }else{
+        arrOfBtns = [btn1, btn2, btn3, btn4, btn5, btn6]
+      }
+      // if the selected difficulty is easy, then only add 3 buttons to the array, else add 6
+      shuffle(arrOfBtns)
+      // we need to randomly shuffle the order of the array, so we add the color classes at random 
+
+      for(let i = 0; i < arrOfBtns.length; i++){
+        if(arrOfBtns[i].classList.length > 1){
+          arrOfBtns[i].classList.remove(arrOfBtns[i].classList[1])
+          //if the button already has a color class, remove it
+        }
+
+        let colorR = getRandomInt(255)
+        let colorG = getRandomInt(255)
+        let colorB = getRandomInt(255)
+        if(i == 0){
+          colorRElem.innerHTML = colorR
+          colorGElem.innerHTML = colorG
+          colorBElem.innerHTML = colorB
+          //initialize the color to guess 
+        }
+        let style = document.createElement('style');
+        style.type = 'text/css'
+        style.innerHTML = `.color${i} {background-color: rgb(${colorR}, ${colorG}, ${colorB});}`
+        document.getElementsByTagName('head')[0].appendChild(style)
+        arrOfBtns[i].classList.add(`color${i}`)
+        //create the color class and append it to the buttons
+      }
+    }
+
+    function shuffle(array) {
+      let currentIndex = array.length,  randomIndex;
+
+      // While there remain elements to shuffle.
+      while (currentIndex > 0) {
+
+        // Pick a remaining element.
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+          array[randomIndex], array[currentIndex]];
+      }
+
+      return array;
+    }
+
+    function changeDifficulty(){
+      const row = document.getElementById('second-row')
+      row.classList.toggle('second-row')
+      easy.classList.toggle('selected')
+      hard.classList.toggle('selected')
+      generateColor()
+    }
+
+    generateColor()
+  </script>
+</body>
+</html>

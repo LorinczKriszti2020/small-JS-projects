@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stopwatch shit</title>
+  <style>
+    p{
+      color: white;
+      font-family: Arial;
+      font-size: 1.4rem;
+      margin: 0;
+      margin-bottom: 25px;
+    }
+
+    button{
+      border: 1px solid white;
+      color: white;
+      background-color: orange;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      font-size: 1.1rem;
+      border-radius: 5px;
+      margin-right: 5px;
+      cursor: pointer;
+      transition: background-color 0.1s ease-in-out;
+    }
+
+    button:hover{
+      background-color: rgb(206, 137, 9);
+    }
+
+    button:active{
+      background-color: rgb(172, 120, 25);
+    }
+
+    body{
+      margin-top: 50px;
+      background-color: orange;
+      font-family: Arial;
+    }
+
+    .text{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .buttons{
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="text">
+    <p>STOPWATCH</p>
+    <p>VANILLA JAVASCRIPT STOPWATCH</p>
+    <p><span id="seconds">00</span>:<span id="tens">00</span></p>
+  </div>
+  <div class="buttons">
+    <button onclick="start()">Start</button>
+    <button onclick="stopTimer()">Stop</button>
+    <button onclick="resetTimer()">Reset</button>
+  </div>
+
+  <script defer>
+    let seconds = 0
+    let tens = 0
+    let secondsElem = document.getElementById('seconds')
+    let tensElem = document.getElementById('tens')
+    let startBtn = document.getElementById('startBtn')
+    let stopBtn = document.getElementById('stopBtn')
+    let resetBtn = document.getElementById('resetBtn')
+    let interval
+
+    function start(){
+      clearInterval(interval)
+      interval = setInterval(startTimer, 10)
+    }
+
+    function startTimer(){
+      tens++
+
+      if(tens <= 9){
+        tensElem.innerHTML = '0' + tens
+      }
+      if(tens > 9){
+        tensElem.innerHTML = tens
+      }
+      if(tens > 99){
+        tens = 0
+        seconds++
+        if(seconds <= 9){
+          secondsElem.innerHTML = '0' + seconds
+        }else{
+          secondsElem.innerHTML = seconds
+        }
+      }
+    }
+
+    function stopTimer(){
+      clearInterval(interval)
+    }
+
+    function resetTimer(){
+      seconds = '00'
+      tens = '00'
+      secondsElem.innerHTML = seconds
+      tensElem.innerHTML = tens
+      clearInterval(interval)
+    }
+  </script>
+</body>
+</html>

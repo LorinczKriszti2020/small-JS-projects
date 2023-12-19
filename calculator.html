@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <title>Calculator shit</title>
+  <style>
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .container{
+      border: 1px solid rgb(219, 219, 219);
+      width: 420px;
+      padding: 20px;
+    }
+
+    .result{
+      grid-area: result;
+      border: 1px solid rgb(219, 219, 219);
+      padding: 20px;
+      height: 20px;
+      font-size: 1.4rem;
+      align-items: center;
+    }
+
+    .grid{
+      display: grid;
+      grid-template-areas: 
+        "result result result result"
+        "plus minus multiply divide"
+        "n7 n8 n9 equal"
+        "n4 n5 n6 equal"
+        "n1 n2 n3 equal"
+        "n0 dot c equal";
+        grid-column-gap: 15px;
+        grid-row-gap: 15px;
+    }
+
+    .button{
+      padding: 10px 0;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: background-color 0.1s;
+    }
+
+    .number{
+      background-color: rgb(250, 250, 250);
+      border: 1px solid rgb(235, 234, 234);
+    }
+    .number:hover{
+      background-color: rgb(240, 240, 240);
+    }
+    .number:active{
+      background-color: rgb(230, 230, 230);
+    }
+
+    .operator{
+      background-color: rgb(226, 226, 226);
+      border: 1px solid rgb(194, 193, 193);
+    }
+    .operator:hover{
+      background-color: rgb(216, 216, 216);
+    }
+    .operator:active{
+      background-color: rgb(207, 207, 207);
+    }
+
+    .equal{
+      color: white;
+      background-color: rgb(22, 143, 224);
+      border: none;
+    }
+    .equal:hover{
+      background-color: rgb(21, 133, 207);
+    }
+    .equal:active{
+      background-color: rgb(19, 121, 189);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="grid">
+      <div id="screen" class="result"></div>
+      <button onclick="addOperation('+')" class="button operator" style="grid-area: plus">+</button>
+      <button onclick="addOperation('-')" class="button operator" style="grid-area: minus">-</button>
+      <button onclick="addOperation('*')" class="button operator" style="grid-area: multiply">*</button>
+      <button onclick="addOperation('/')" class="button operator" style="grid-area: divide">/</button>
+      <button onclick="addNumber(7)" class="button number" style="grid-area: n7">7</button>
+      <button onclick="addNumber(8)" class="button number" style="grid-area: n8">8</button>
+      <button onclick="addNumber(9)" class="button number" style="grid-area: n9">9</button>
+      <button onclick="addNumber(4)" class="button number" style="grid-area: n4">4</button>
+      <button onclick="addNumber(5)" class="button number" style="grid-area: n5">5</button>
+      <button onclick="addNumber(6)" class="button number" style="grid-area: n6">6</button>
+      <button onclick="addNumber(1)" class="button number" style="grid-area: n1">1</button>
+      <button onclick="addNumber(2)" class="button number" style="grid-area: n2">2</button>
+      <button onclick="addNumber(3)" class="button number" style="grid-area: n3">3</button>
+      <button onclick="addNumber(0)" class="button number" style="grid-area: n0">0</button>
+      <button onclick="addNumber('.')" class="button number" style="grid-area: dot">.</button>
+      <button onclick="equal()" class="button equal" style="grid-area: equal">=</button>
+      <button onclick="wipeBoard()" class="button number" style="grid-area: c">C</button>
+    </div>
+  </div>
+  <script defer>
+    let result = ''
+    const ops = '+-*/'
+
+    function addNumber(n){
+      let check = true
+      if(n == '.' && !ops.includes(result[result.length - 1])){
+        let tinemMinte = result.split(" ").pop()
+        //if n == '.' and last char is not operator we save last number in tinemMinte
+        if(tinemMinte.includes('.')){
+          //and we check tinemMinte if there is already a dot inside, if there is check will be false, and the dot will not be introduced
+          check = false
+        }
+      }
+
+      if(!result && n == 0 || ops.includes(result[result.length - 1]) && n == 0){
+        //if result is empty or the previous char is an operator and n == 0
+      }else if(!ops.includes(result[result.length - 1]) && check){
+        //if previous char is not operator
+        result += '' + n
+      }else if(check){
+        result += ' ' + n
+      }
+      //check is only for when n == '.'
+      display(result)
+    }
+
+    function addOperation(op){
+      if(result && !ops.includes(result[result.length - 1])){
+        //if there is a result(so u dont start with an operator, and if last char is not an operator)
+        result += ' ' + op
+      }else if(ops.includes(result[result.length - 1])){
+        //but if the last char is an operator, change it to current op. result here can not be null
+        result = result.substring(0, result.length - 1)
+        result += op
+      }
+      display(result)
+    }
+
+    function equal(){
+      if(result){
+        result = eval(result)
+        display(result)
+      }
+    }
+
+    function wipeBoard(){
+      result = ''
+      display(result)
+    }
+
+    function display(result){
+      let screen = document.getElementById('screen');
+      screen.innerText = result
+    }
+  </script>
+</body>
+</html>
