@@ -62,6 +62,11 @@
       background-color: #c1d72e;
     }
 
+    .pressed{
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
     .drawing{
       width: 450px;
       height: 250px;
@@ -88,6 +93,11 @@
       color:#c1d72e;
     }
 
+    .hidden{
+      display: none;
+      pointer-events: none;
+    }
+
   </style>
 </head>
 <body>
@@ -97,7 +107,7 @@
     <p class="generic-text">Use the alphabet below to guess the word, or click hint to get a clue.</p>
   </div>
   <div class="letter-row">
-    <button class="letter">Q</button>
+    <button id="Q" onclick="toggleButton('Q')" class="letter">Q</button>
     <button class="letter">W</button>
     <button class="letter">E</button>
     <button class="letter">R</button>
@@ -129,22 +139,74 @@
     <button class="letter">M</button>
   </div>
   <div class="container">
-    <p class="generic-text">Category</p>
+    <p class="generic-text">The chosen category is <span id="category"></span></p>
     <p class="generic-text">Guess</p>
     <p class="generic-text">Lives</p>
-    <p class="generic-text">Clue</p>
+    <p id="hint" class="generic-text">Hint</p>
   </div>
   <div class="container">
     <div class="drawing"></div>
     <div style="display: flex;">
-      <button class="buttons">Hint</button>
-      <button class="buttons">Play again</button>
+      <button onclick="toggleHint()" class="buttons">Hint</button>
+      <button class="buttons">New word</button>
       <button class="buttons">Add custom</button>
     </div>
   </div>
 
   <script defer>
 
+
+    const teamsCategory = ["everton", "liverpool", "swansea", "chelsea", "hull", "manchester-city", "newcastle-united"]
+    const moviesCategory = ["alien", "dirty-harry", "gladiator", "finding-nemo", "jaws"]
+    const citiesCategory = ["manchester", "milan", "madrid", "amsterdam", "prague"]
+    const categories = [teamsCategory, moviesCategory, citiesCategory]
+    const teamsHints = ["Based in Mersyside", "Based in Mersyside", "First Welsh team to reach the Premier Leauge", "Owned by A russian Billionaire", "Once managed by Phil Brown", "2013 FA Cup runners up", "Gazza's first club"]
+    const moviesHints = ["Science-Fiction horror film", "1971 American action film", "Historical drama", "Anamated Fish", "Giant great white shark"]
+    const citiesHints = ["Northern city in the UK", "Home of AC and Inter", "Spanish capital", "Netherlands capital", "Czech Republic capital"]
+    const hints = [teamsHints, moviesHints, citiesHints]
+    let selectedHint
+
+    function generateWord(){
+      const categoryElem = document.getElementById('category')
+      let randomNumber = getRandomInt(categories.length)
+      let categoryName
+      switch (randomNumber){
+        case 0:
+          categoryName = 'Football Teams';
+          break;
+        case 1:
+          categoryName = 'Films';
+          break;
+        case 2:
+          categoryName = 'Cities';
+          break;
+      }
+      let category = categories[randomNumber]
+      let hint = hints[randomNumber]
+      randomNumber = getRandomInt(category.length)
+      let selectedWord = category[randomNumber]
+      let selectedHint = hint[randomNumber]
+
+      categoryElem.innerHTML = categoryName
+    }
+
+    function toggleHint(){
+      console.log('ceva')
+      const hintElem = document.getElementById('hint')
+      hintElem.innerHTML = selectedHint
+      hintElem.classList.toggle('hidden')
+    }
+    
+    function getRandomInt(max) { 
+      return Math.floor(Math.random() * max);
+    }
+
+    function toggleButton(letter){
+      const buttonElem = document.getElementById(`${letter}`)
+      buttonElem.classList.toggle('pressed')
+    }
+
+    generateWord()
   </script>
 </body>
 </html>
