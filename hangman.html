@@ -97,6 +97,18 @@
       display: none;
       pointer-events: none;
     }
+    
+    .spaced{
+      letter-spacing: 15px;
+    }
+
+    .custom{
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+      align-items: center;
+      justify-content: center;
+    }
 
   </style>
 </head>
@@ -107,55 +119,64 @@
     <p class="generic-text">Use the alphabet below to guess the word, or click hint to get a clue.</p>
   </div>
   <div class="letter-row">
-    <button id="Q" onclick="toggleButton('Q')" class="letter">Q</button>
-    <button class="letter">W</button>
-    <button class="letter">E</button>
-    <button class="letter">R</button>
-    <button class="letter">T</button>
-    <button class="letter">Y</button>
-    <button class="letter">U</button>
-    <button class="letter">I</button>
-    <button class="letter">O</button>
-    <button class="letter">P</button>
+    <button id="Q" onclick="pressButton('Q')" class="letter">Q</button>
+    <button id="W" onclick="pressButton('W')" class="letter">W</button>
+    <button id="E" onclick="pressButton('E')" class="letter">E</button>
+    <button id="R" onclick="pressButton('R')" class="letter">R</button>
+    <button id="T" onclick="pressButton('T')" class="letter">T</button>
+    <button id="Y" onclick="pressButton('Y')" class="letter">Y</button>
+    <button id="U" onclick="pressButton('U')" class="letter">U</button>
+    <button id="I" onclick="pressButton('I')" class="letter">I</button>
+    <button id="O" onclick="pressButton('O')" class="letter">O</button>
+    <button id="P" onclick="pressButton('P')" class="letter">P</button>
   </div>
   <div class="letter-row">
-    <button class="letter">A</button>
-    <button class="letter">S</button>
-    <button class="letter">D</button>
-    <button class="letter">F</button>
-    <button class="letter">G</button>
-    <button class="letter">H</button>
-    <button class="letter">J</button>
-    <button class="letter">K</button>
-    <button class="letter">L</button>
+    <button id="A" onclick="pressButton('A')" class="letter">A</button>
+    <button id="S" onclick="pressButton('S')" class="letter">S</button>
+    <button id="D" onclick="pressButton('D')" class="letter">D</button>
+    <button id="F" onclick="pressButton('F')" class="letter">F</button>
+    <button id="G" onclick="pressButton('G')" class="letter">G</button>
+    <button id="H" onclick="pressButton('H')" class="letter">H</button>
+    <button id="J" onclick="pressButton('J')" class="letter">J</button>
+    <button id="K" onclick="pressButton('K')" class="letter">K</button>
+    <button id="L" onclick="pressButton('L')" class="letter">L</button>
   </div>
   <div class="letter-row" style="margin-bottom: 20px;">
-    <button class="letter">Z</button>
-    <button class="letter">X</button>
-    <button class="letter">C</button>
-    <button class="letter">V</button>
-    <button class="letter">B</button>
-    <button class="letter">N</button>
-    <button class="letter">M</button>
+    <button id="Z" onclick="pressButton('Z')" class="letter">Z</button>
+    <button id="X" onclick="pressButton('X')" class="letter">X</button>
+    <button id="C" onclick="pressButton('C')" class="letter">C</button>
+    <button id="V" onclick="pressButton('V')" class="letter">V</button>
+    <button id="B" onclick="pressButton('B')" class="letter">B</button>
+    <button id="N" onclick="pressButton('N')" class="letter">N</button>
+    <button id="M" onclick="pressButton('M')" class="letter">M</button>
   </div>
   <div class="container">
     <p class="generic-text">The chosen category is <span id="category"></span></p>
-    <p class="generic-text">Guess</p>
-    <p class="generic-text">Lives</p>
-    <p id="hint" class="generic-text">Hint</p>
+    <p id="guess" class="generic-text spaced"></p>
+    <p id="screen" class="generic-text">You have <span id="lives"></span> lives</p>
+    <p class="generic-text">Clue: <span id="hint" class="hidden"></span></p>
   </div>
   <div class="container">
     <div class="drawing"></div>
     <div style="display: flex;">
-      <button onclick="toggleHint()" class="buttons">Hint</button>
-      <button class="buttons">New word</button>
-      <button class="buttons">Add custom</button>
+      <button id="hintBtn" onclick="toggleHint()" class="buttons">Hint</button>
+      <button onclick="generateWord()" class="buttons">New word</button>
+      <button onclick="addCustom()" class="buttons">Add custom</button>
+    </div>
+    <div class="custom">
+      <div>
+        <label class="generic-text">Word</label>
+        <input class="inputs" type="text">
+        <label class="generic-text">Category</label>
+        <input class="inputs" type="text">
+      </div>
+      <label class="generic-text">Hint</label>
+      <input class="inputs" type="text">
+      <button class="buttons">Generate Custom</button>
     </div>
   </div>
 
   <script defer>
-
-
     const teamsCategory = ["everton", "liverpool", "swansea", "chelsea", "hull", "manchester-city", "newcastle-united"]
     const moviesCategory = ["alien", "dirty-harry", "gladiator", "finding-nemo", "jaws"]
     const citiesCategory = ["manchester", "milan", "madrid", "amsterdam", "prague"]
@@ -164,12 +185,15 @@
     const moviesHints = ["Science-Fiction horror film", "1971 American action film", "Historical drama", "Anamated Fish", "Giant great white shark"]
     const citiesHints = ["Northern city in the UK", "Home of AC and Inter", "Spanish capital", "Netherlands capital", "Czech Republic capital"]
     const hints = [teamsHints, moviesHints, citiesHints]
+    
     let selectedHint
-
+    let category
+    let hint
+    let categoryName
+    let selectedWord
     function generateWord(){
       const categoryElem = document.getElementById('category')
       let randomNumber = getRandomInt(categories.length)
-      let categoryName
       switch (randomNumber){
         case 0:
           categoryName = 'Football Teams';
@@ -181,29 +205,135 @@
           categoryName = 'Cities';
           break;
       }
-      let category = categories[randomNumber]
-      let hint = hints[randomNumber]
+      category = categories[randomNumber]
+      hint = hints[randomNumber]
       randomNumber = getRandomInt(category.length)
-      let selectedWord = category[randomNumber]
-      let selectedHint = hint[randomNumber]
+      selectedWord = category[randomNumber]
+      selectedHint = hint[randomNumber]
 
+      // '-' generation for words
+      guess.innerHTML = ''
+      for(let i = 0; i < selectedWord.length; i++){
+        if(letters.includes(selectedWord[i])){
+          guess.innerHTML += '_'
+        }else{
+          guess.innerHTML += `${selectedWord[i]}`
+        }
+      }
+      console.log(selectedWord)
+      
+      //resets
+      if(hintBtn.innerHTML === 'Hide Hint'){
+        hintBtn.innerHTML = 'Hint'
+        hintElem.classList.toggle('hidden')
+        hintElem.innerHTML = ''
+      }
+
+      for(i = 0; i < letters.length; i++){
+        const buttonElem = document.getElementById(`${letters[i].toUpperCase()}`)
+        if(buttonElem.classList.contains('pressed')){
+          buttonElem.classList.remove('pressed')
+        }
+      }
+
+      pressedButtons = []
+
+      lives = 10
+      livesElem.innerHTML = lives
+      
       categoryElem.innerHTML = categoryName
     }
 
+    function generateWord(word, category, hint){
+      
+
+      // '-' generation for words
+      guess.innerHTML = ''
+      for(let i = 0; i < selectedWord.length; i++){
+        if(letters.includes(selectedWord[i])){
+          guess.innerHTML += '_'
+        }else{
+          guess.innerHTML += `${selectedWord[i]}`
+        }
+      }
+      console.log(selectedWord)
+      
+      //resets
+      if(hintBtn.innerHTML === 'Hide Hint'){
+        hintBtn.innerHTML = 'Hint'
+        hintElem.classList.toggle('hidden')
+        hintElem.innerHTML = ''
+      }
+
+      for(i = 0; i < letters.length; i++){
+        const buttonElem = document.getElementById(`${letters[i].toUpperCase()}`)
+        if(buttonElem.classList.contains('pressed')){
+          buttonElem.classList.remove('pressed')
+        }
+      }
+
+      pressedButtons = []
+
+      lives = 10
+      livesElem.innerHTML = lives
+      
+      categoryElem.innerHTML = categoryName
+    }
+
+    const hintElem = document.getElementById('hint')
+    const hintBtn = document.getElementById('hintBtn')
     function toggleHint(){
-      console.log('ceva')
-      const hintElem = document.getElementById('hint')
       hintElem.innerHTML = selectedHint
       hintElem.classList.toggle('hidden')
+      if(hintBtn.innerHTML === 'Hint'){
+        hintBtn.innerHTML = 'Hide Hint'
+      }else{
+        hintBtn.innerHTML = 'Hint'
+      }
     }
     
     function getRandomInt(max) { 
       return Math.floor(Math.random() * max);
     }
 
-    function toggleButton(letter){
+    const livesElem = document.getElementById('lives')
+    const screen = document.getElementById('screen')
+    let lives
+    let pressedButtons = []
+    function pressButton(letter){
       const buttonElem = document.getElementById(`${letter}`)
       buttonElem.classList.toggle('pressed')
+      pressedButtons.push(letter)
+
+      let check = false
+      if(lives > 0 || screen.innerHTML === 'You Win!'){
+        guess.innerHTML = ''
+        for(let i = 0; i < selectedWord.length; i++){
+          if(selectedWord.includes(letter.toLowerCase())){
+            check = true
+          }
+          if(pressedButtons.includes(selectedWord[i].toUpperCase())){
+            guess.innerHTML += selectedWord[i]
+          }else if(letters.includes(selectedWord[i])){
+            guess.innerHTML += '_'
+          }else{
+            guess.innerHTML += `${selectedWord[i]}`
+          }
+        }
+      }
+      
+      if(!guess.innerText.includes('_')){
+        screen.innerHTML = 'You Win!'
+      }
+      if(!check){
+        lives--
+        if(lives > 0){
+          livesElem.innerHTML = lives
+        }
+        else{
+          screen.innerHTML = 'You Lose!'
+        }
+      }
     }
 
     generateWord()
